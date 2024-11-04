@@ -10,9 +10,6 @@ const FileDownload = ({ fileId }) => {
 
     try {
       const response = await downloadFile(fileId);
-
-      console.log('Response Status:', response.status);
-      console.log('Response Headers:', response.headers);
       
       if (response.status === 200) {
         const blob = new Blob([response.data], { type: response.headers['content-type'] });

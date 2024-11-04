@@ -1,7 +1,8 @@
 // src/components/Auth/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser, setAuthToken } from '../../api';
+import { loginUser } from '../../api';
+import { setGlobalToken } from '../../store';
 import './Login.css';
 
 const Login = ({ onSwitch }) => {
@@ -13,8 +14,7 @@ const Login = ({ onSwitch }) => {
       e.preventDefault();
       try {
           const response = await loginUser(username, password);
-          setAuthToken(response.data.access_token);
-          localStorage.setItem('token', response.data.access_token);
+          setGlobalToken(response.data.access_token);
           navigate('/user');
       } catch (error) {
           alert("Login failed",error);

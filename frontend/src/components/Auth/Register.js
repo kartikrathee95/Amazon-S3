@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUser, setAuthToken } from '../../api';
-import './Register.css'; // Import the CSS file for styling
+import { registerUser } from '../../api';
+import { setGlobalToken } from '../../store';
+import { loginUser } from '../../api';
+import './Register.css'; 
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -15,9 +17,8 @@ const Register = () => {
     try {
       const response = await registerUser({ username, email, password });
       if (response) {
-        setAuthToken(response.jwt);
-        localStorage.setItem('token', response.access_token);
-        navigate('/login');
+        setGlobalToken(response.access_token);
+        navigate('/user');
       }
     } catch (error) {
       console.error('Registration failed:', error);

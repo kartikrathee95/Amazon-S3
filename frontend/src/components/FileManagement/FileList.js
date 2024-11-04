@@ -1,111 +1,45 @@
+// FileList.js
 import React, { useEffect, useState } from 'react';
-import { listFiles, setAuthToken, shareFile } from '../../api'; // Import shareFile function
-import FileDownload from './FileDownload';
-import FileUpload from './FileUpload';
+import { listFiles } from '../../api'; 
+import FileItem from './FileItem';
 
-const FileList = () => {
-  const [files, setFiles] = useState([]);
-  const [sharingFileId, setSharingFileId] = useState(null);
-  const [shareUsername, setShareUsername] = useState('');
+const FileList = ({ onUploadSuccess }) => {
+    const [files, setFiles] = useState([]);
 
-  // Function to fetch files from the API
-  const fetchFiles = async () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setAuthToken(token); // Set the token for API requests
-    }
-    try {
-      const response = await listFiles();
-      setFiles(response.data);
-    } catch (error) {
-      console.error('Error fetching files:', error);
-    }
-  };
+    const fetchFiles = async () => {
+        try {
+            const response = await listFiles(); 
+            const independentFiles = response.filter(file => !file.folder_id);
+            setFiles(Array.isArray(independentFiles) ? independentFiles : []);
+        } catch (error) {
+            console.error('Error fetching files:', error);
+        }
+    };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setAuthToken(token); // Set the token for API requests
-    }
+    useEffect(() => {
+        fetchFiles();
+    }, []);
 
-    fetchFiles(); // Fetch files on component mount
-  }, []); // Run only once on mount
+    useEffect(() => {
+        if (onUploadSuccess) {
+            fetchFiles(); // Refresh the file list on upload success
+        }
+    }, [onUploadSuccess]);
 
-  // This function will be called after a successful upload
-  const handleUploadSuccess = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setAuthToken(token); // Set the token for API requests
-    }
-    fetchFiles(); // Refresh the file list after upload
-  };
-
-  const handleShare = async (fileId) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setAuthToken(token); // Set the token for API requests
-    }
-    if (!shareUsername) {
-      alert('Please enter a username or email to share with.');
-      return;
-    }
-
-    try {
-      await shareFile(fileId, { user_id: shareUsername });
-      alert('File shared successfully!');
-      setShareUsername(''); // Clear the input
-      setSharingFileId(null);
-      fetchFiles(); // Refresh file list after sharing
-    } catch (error) {
-      console.error('Error sharing file:', error);
-      alert('Failed to share file. Please check the username/email.');
-    }
-  };
-
-  return (
-    <div>
-      <h2>File List</h2>
-      <FileUpload onUploadSuccess={handleUploadSuccess} />
-      {files.length === 0 ? (
-        <p>No files available.</p>
-      ) : (
-        <ul>
-          {files.map((file) => (
-            <li key={file.file_id}>
-              {file.filename}
-              <FileDownload fileId={file.file_id} />
-              <select
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === 'share') {
-                    setSharingFileId(file.file_id); // Set the file ID to share
-                  } else {
-                    setSharingFileId(null); // Reset if not sharing
-                  }
-                }}
-              >
-                <option value="">Select Action</option>
-                <option value="download">Download</option>
-                <option value="share">Share</option>
-              </select>
-              {sharingFileId === file.file_id && (
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Enter username or email"
-                    value={shareUsername}
-                    onChange={(e) => setShareUsername(e.target.value)}
-                    required
-                  />
-                  <button onClick={() => handleShare(file.file_id)}>Share</button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+    return (
+        <div>
+            <h2>Files</h2>
+            {files.length === 0 ? (
+                <p>No files available.</p>
+            ) : (
+                <ul>
+                    {files.map((file) => (
+                        <FileItem key={file.file_id} file={file} />
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
 };
 
 export default FileList;

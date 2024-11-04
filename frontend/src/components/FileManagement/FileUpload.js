@@ -1,14 +1,10 @@
 // src/components/FileManagement/FileUpload.js
 import React, { useState } from 'react';
-import { uploadFile, setAuthToken } from '../../api';
+import { uploadFile } from '../../api';
 
 const FileUpload = ({ onUploadSuccess }) => {
     const [file, setFile] = useState(null);
-    const [folderId, setFolderId] = useState('');
-    const token = localStorage.getItem('token');
-    if (token) {
-      setAuthToken(token);
-    }
+    const [folderName, setFolderName] = useState('');
 
     const handleUpload = async (e) => {
         e.preventDefault();
@@ -19,7 +15,7 @@ const FileUpload = ({ onUploadSuccess }) => {
         }
 
         try {
-            await uploadFile(file, folderId ? folderId : null);
+            await uploadFile(file, folderName ? folderName : null);
             console.log('File uploaded successfully');
             alert('File uploaded successfully')
             onUploadSuccess(); // Call the function to refresh the file list
@@ -38,9 +34,9 @@ const FileUpload = ({ onUploadSuccess }) => {
                 />
                 <input 
                     type="text" 
-                    value={folderId} 
-                    onChange={(e) => setFolderId(e.target.value)} 
-                    placeholder="Folder ID (optional)" 
+                    value={folderName} 
+                    onChange={(e) => setFolderName(e.target.value)} 
+                    placeholder="Folder Name (optional)" 
                 />
                 <button type="submit">Upload</button>
             </form>
