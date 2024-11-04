@@ -3,7 +3,6 @@ name = "app"
 version = "0.1.0"
 description = ""
 authors = ["kartik"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -17,6 +16,8 @@ python-jose = "^3.3.0"
 python-multipart = "^0.0.12"
 passlib = "^1.7.4"
 psycopg2 = "^2.9.10"
+black = "^24.10.0"
+isort = "^5.13.2"
 
 [build-system]
 requires = ["poetry-core"]

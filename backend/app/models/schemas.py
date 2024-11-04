@@ -58,6 +58,10 @@ class Folder(BaseModel):
 
     class Config:
         orm_mode = True
+        
+class FileUploadRequest(BaseModel):
+    file: str  
+    folder_name: Optional[str] = None
 
 class FileVersionCreate(BaseModel):
     file_id: int

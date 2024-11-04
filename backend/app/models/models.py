@@ -33,6 +33,7 @@ class File(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
+    folder_id = Column(Integer, ForeignKey('folders.id'), nullable=True)
     file_name = Column(String, nullable=False)
     file_size = Column(BigInteger, nullable=False)
     file_type = Column(String, nullable=False)
@@ -44,6 +45,7 @@ class File(Base):
     versions = relationship("FileVersion", back_populates="file")
     file_metadata = relationship("Metadata", back_populates="file")
     permissions = relationship("Permission", back_populates="file")
+    folder = relationship("Folder", back_populates="files")
 
 
 class Folder(Base):
@@ -51,12 +53,14 @@ class Folder(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
-    folder_name = Column(String, nullable=False)
-    parent_folder_id = Column(Integer, ForeignKey('folders.id'), nullable=True)
+    name = Column(String, nullable=False)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
+    updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     owner = relationship("User", back_populates="folders")
+    files = relationship("File", back_populates="folder")
     permissions = relationship("Permission", back_populates="folder")
+
 
 
 class FileVersion(Base):
