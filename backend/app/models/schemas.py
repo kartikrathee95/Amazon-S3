@@ -18,7 +18,7 @@ class User(BaseModel):
     id: int
     email: EmailStr
     username: str
-    password_hash: Optional[str]  # Optional for reading from DB
+    password_hash: Optional[str]
     created_at: datetime
     updated_at: datetime
 
@@ -61,6 +61,7 @@ class Folder(BaseModel):
         
 class FileUploadRequest(BaseModel):
     file: str  
+    file_name: str
     folder_name: Optional[str] = None
 
 class FileVersionCreate(BaseModel):
@@ -110,21 +111,19 @@ class Permission(BaseModel):
     class Config:
         orm_mode = True
 
+class RollbackRequest(BaseModel):
+    file_id: int
+    version_number: int
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
-class UsageAnalyticsCreate(BaseModel):
-    user_id: int
-    storage_used: int = Field(..., ge=0)
-    total_files: int = Field(..., ge=0)
-
-class UsageAnalytics(BaseModel):
-    analytics_id: int
-    user_id: int
-    storage_used: int
-    total_files: int
-    last_accessed: datetime
+class FileSearchRequest(BaseModel):
+    keyword: Optional[str] = None
+    file_type: Optional[str] = None
+    created_after: Optional[str] = None 
+    created_before: Optional[str] = None
 
     class Config:
         orm_mode = True

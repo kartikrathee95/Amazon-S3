@@ -40,12 +40,14 @@ class File(Base):
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
     is_deleted = Column(Boolean, default=False)
+    current_version = Column(Integer)
 
     owner = relationship("User", back_populates="files")
     versions = relationship("FileVersion", back_populates="file")
     file_metadata = relationship("Metadata", back_populates="file")
     permissions = relationship("Permission", back_populates="file")
     folder = relationship("Folder", back_populates="files")
+
 
 
 class Folder(Base):
@@ -112,4 +114,4 @@ class UsageAnalytics(Base):
 
     user = relationship("User", back_populates="usage_analytics")
 
-Base.metadata.create_all(engine)
+Base.metadata.create_all(bind=engine)
