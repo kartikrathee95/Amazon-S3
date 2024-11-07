@@ -1,24 +1,29 @@
-// src/components/FileManagement/FileUpload.js
 import React, { useState } from 'react';
 import { uploadFile } from '../../api';
 
 const FileUpload = ({ onUploadSuccess }) => {
     const [file, setFile] = useState(null);
     const [folderName, setFolderName] = useState('');
+    const [originalFileName, setOriginalFileName] = useState('');  // State to store the original file name
 
     const handleUpload = async (e) => {
         e.preventDefault();
         if (!file) {
             console.error('No file selected');
-            alert('Please select a file to upload')
+            alert('Please select a file to upload');
             return;
         }
 
         try {
-            await uploadFile(file, folderName ? folderName : null);
+            // Upload the file
+            const response = await uploadFile(file, folderName ? folderName : null);
             console.log('File uploaded successfully');
-            alert('File uploaded successfully')
-            onUploadSuccess(); // Call the function to refresh the file list
+            alert('File uploaded successfully');
+
+            // Set the original filename after successful upload (from response)
+            setOriginalFileName(response.original_filename || file.name);  // Handle versioned filename
+
+            onUploadSuccess(); // Refresh the file list on success
         } catch (error) {
             console.error('File upload failed:', error.response ? error.response.data : error);
         }
@@ -40,6 +45,12 @@ const FileUpload = ({ onUploadSuccess }) => {
                 />
                 <button type="submit">Upload</button>
             </form>
+
+            {originalFileName && (
+                <div>
+                    <h3>Uploaded File: {originalFileName}</h3>
+                </div>
+            )}
         </div>
     );
 };

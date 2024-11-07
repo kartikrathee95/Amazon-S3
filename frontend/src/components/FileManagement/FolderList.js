@@ -13,7 +13,7 @@ const FolderList = ({ folders, onUploadSuccess }) => {
 
     return (
         <div>
-          <h2>Folders</h2>
+            <h2>Folders</h2>
             {folders.length === 0 ? (
                 <p>No folders available.</p>
             ) : (
@@ -25,7 +25,12 @@ const FolderList = ({ folders, onUploadSuccess }) => {
                         {openFolders[folder.folder_id] && (
                             <ul>
                                 {folder.files.map((file) => (
-                                    <FileItem key={file.file_id} file={file} onShareSuccess={onUploadSuccess} />
+                                    <FileItem 
+                                        key={file.file_id} 
+                                        file={file} 
+                                        isInFolder={true}  // Mark files as part of a folder
+                                        onUploadSuccess={onUploadSuccess} 
+                                    />
                                 ))}
                             </ul>
                         )}

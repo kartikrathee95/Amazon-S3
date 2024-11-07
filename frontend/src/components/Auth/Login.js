@@ -13,11 +13,11 @@ const Login = ({ onSwitch }) => {
   const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-          const response = await loginUser(username, password);
-          setGlobalToken(response.data.access_token);
-          navigate('/user');
+          const response = await loginUser(username, password);  // Call login API
+          setGlobalToken(response.data.access_token);  // Store the access token
+          navigate(`/user/${username}`);  // Redirect to user-specific page
       } catch (error) {
-          alert("Login failed",error);
+          alert("Login failed", error);
           console.error("Login failed:", error);
       }
   };

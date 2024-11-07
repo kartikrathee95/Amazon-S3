@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../api';
 import { setGlobalToken } from '../../store';
-import { loginUser } from '../../api';
 import './Register.css'; 
 
 const Register = () => {
@@ -12,13 +11,14 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
+  // Handle registration form submission
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await registerUser({ username, email, password });
+      const response = await registerUser({ username, email, password });  // Call register API
       if (response) {
-        setGlobalToken(response.access_token);
-        navigate('/user');
+        setGlobalToken(response.access_token);  // Store the access token after registration
+        navigate(`/user/${username}`);
       }
     } catch (error) {
       console.error('Registration failed:', error);
@@ -29,7 +29,7 @@ const Register = () => {
   return (
     <div className="register-container">
       <h2>Register</h2>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}  {/* Display error message if registration fails */}
       <form onSubmit={handleRegister}>
         <input 
           type="text" 

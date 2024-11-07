@@ -46,31 +46,68 @@ export const loginUser = async (username, password) => {
   });
 };
 
-// File Upload
+/// File Upload
 export const uploadFile = async (file, folderName) => {
   const token = getGlobalToken();
+  
+  // Handle empty file
+  if (file.size === 0) {
+    console.log("Uploading empty file...");
+    return await apiClient.post('/files/upload', {
+      file: "",
+      folder_name: folderName || null,
+      file_name: file.name,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+  }
+
+  // Base64 encoding of the file
   const base64File = await new Promise((resolve, reject) => {
     const reader = new FileReader();
+
     reader.onloadend = () => {
-      const base64String = reader.result.split(',')[1]; 
-      resolve(base64String);
+      const result = reader.result;
+
+      // Check if the result is valid (it's a valid Data URL)
+      if (result && typeof result === 'string' && result.startsWith('data:')) {
+        const base64String = result.split(',')[1]; // Extract base64 string
+        resolve(base64String);
+      } else {
+        reject(new Error('Failed to read file as base64'));
+      }
     };
-    reader.onerror = reject;
+
+    reader.onerror = () => reject(new Error('Error reading file'));
+
     reader.readAsDataURL(file); // Read the file as base64
   });
 
   const payload = {
-    file: base64File,
+    file: base64File, // Send the base64 content for non-empty files
     folder_name: folderName || null,
+    file_name: file.name,
   };
-  console.log(payload);
-  return await apiClient.post('/files/upload', payload, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    },
-  });
+
+  console.log('Uploading file with payload:', payload);
+
+  try {
+    return await apiClient.post('/files/upload', payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    throw error;
+  }
 };
+
+
 // List Files
 export const listFiles = async () => {
   const token = getGlobalToken(); 
@@ -95,17 +132,6 @@ export const downloadFile = async (fileId) => {
   return response; 
 };
 
-// Create Folder
-export const createFolder = async (folderName, parentId) => {
-  const token = getGlobalToken(); 
-
-  return await apiClient.post('/folders', { folder_name: folderName, parent_id: parentId }, {
-    headers: {
-      'Authorization': `Bearer ${token}`, 
-    },
-  });
-};
-
 // List Folders
 export const listFolders = async () => {
   const token = getGlobalToken(); 
@@ -124,7 +150,7 @@ export const listFilesAndFolders = async () => {
       'Authorization': `Bearer ${token}`,
     },
   });
-
+  console.log(response.data);
   return response.data;
 };
 // Delete Folder
@@ -138,19 +164,6 @@ export const deleteFolder = async (folderId) => {
   });
 };
 
-// Get Usage Analytics
-export const getUsageAnalytics = async () => {
-  const token = getGlobalToken(); 
-
-  const response = await apiClient.get('/Analytics', {
-    headers: {
-      'Authorization': `Bearer ${token}`, 
-    },
-  });
-
-  return response.data; 
-};
-
 // Share File
 export const shareFile = async (fileId, shareDetails) => {
   const token = getGlobalToken(); 
@@ -161,4 +174,59 @@ export const shareFile = async (fileId, shareDetails) => {
       'Authorization': `Bearer ${token}`, 
     },
   });
+};
+
+export const searchFiles = async ({ keyword, file_type, created_after, created_before }) => {
+  const token = getGlobalToken();
+  try {
+      const response = await apiClient.get('/files/search', {
+          params: {
+              keyword,
+              file_type,
+              created_after,
+              created_before,
+          },
+          headers: {
+              'Authorization': `Bearer ${token}`,
+          },
+      });
+      return response.data;
+  } catch (error) {
+      console.error('Error fetching files based on search:', error);
+      throw error;
+  }
+};
+
+export const getFileVersions = async (fileId) => {
+  const token = getGlobalToken();
+  try {
+    const response = await apiClient.get(`/files/${fileId}/versions`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching file versions:', error);
+    throw error;
+  }
+};
+
+export const rollbackFile = async (fileId, versionNumber) => {
+  const token = getGlobalToken();
+  try {
+    await apiClient.post(
+      '/files/rollback',
+      { file_id: fileId, version_number: versionNumber },
+      {
+        headers: {
+          "Content-Type":"application/json",
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    console.error('Error rolling back file:', error);
+    throw error;
+  }
 };
