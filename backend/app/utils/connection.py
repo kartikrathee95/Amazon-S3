@@ -6,9 +6,9 @@ from sqlalchemy import text
 
 # For local development
 if os.getenv("ENV") and os.getenv("ENV") == "local":
-    DB_HOST = "db"  # Docker Compose service name
+    DB_HOST = 'db'  # Docker Compose service name
 else:
-    DB_HOST = "https://amazon-s3-3.onrender.com"
+    DB_HOST = 'amazon-s3-3.onrender.com'
   
 DATABASE_URL = f"postgresql://postgres:12345qwert@{DB_HOST}:5432/entity_store"
 
