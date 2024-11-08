@@ -7,8 +7,10 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # Wait for db to be healthy
     environment:
+      ENV: "local"  # Set to 'local' for dev
       DATABASE_URL: "postgresql://postgres:12345qwert@db:5432/entity_store"
 
   db:
@@ -21,7 +23,12 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "entity_store"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
 
 volumes:
   postgres-data:
-
