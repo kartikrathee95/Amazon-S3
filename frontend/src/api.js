@@ -26,7 +26,6 @@ export const registerUser = async (params) => {
 
 // Logout function
 export const logoutUser = () => {
-  localStorage.removeItem('access_token');
   window.location.href = '/login'; // Redirect to login
 };
 
@@ -37,7 +36,6 @@ export const loginUser = async (username, password) => {
   params.append('password', password);
 
   const token = getGlobalToken(); 
-
   return await apiClient.post('/auth/oauth/login', params, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
