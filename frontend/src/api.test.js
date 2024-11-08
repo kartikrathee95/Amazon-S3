@@ -1,7 +1,7 @@
 const tap = require("tap");
 const supertest = require("supertest");
 const express = require('express');
-const app = require("../app");  // Replace with your app's entry point
+const app = require("../app");
 app.use(express.json());
 
 const server = supertest(app);
