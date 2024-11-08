@@ -4,13 +4,8 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import text
 
-# For local development
-if os.getenv("ENV") and os.getenv("ENV") == "local":
-    DB_HOST = 'db'  # Docker Compose service name
-else:
-    DB_HOST = 'amazon-s3-3.onrender.com'
-  
-DATABASE_URL = f"postgresql://postgres:12345qwert@{DB_HOST}:5432/entity_store"
+
+DATABASE_URL = f"postgresql://postgres_sxfy_user:hk99PoFhEsoU3aRpcB6ELQ7JrSyi0wBc@dpg-csn6nl8gph6c73fu10cg-a.oregon-postgres.render.com/postgres_sxfy"
 
 Base = declarative_base()
 
@@ -27,7 +22,7 @@ def create_database_if_not_exists():
     try:
         with engine.connect() as connection:
             # Check if the 'entity_store' database exists
-            result = connection.execute(text("SELECT 1 FROM pg_catalog.pg_database WHERE datname = 'entity_store'"))
+            result = connection.execute(text("SELECT 1 FROM pg_catalog.pg_database WHERE datname = 'postgres_sxfy'"))
             if not result.fetchone():
                 connection.execute(text("CREATE DATABASE entity_store"))
                 print("Database 'entity_store' created!")
