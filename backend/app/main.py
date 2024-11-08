@@ -12,9 +12,13 @@ import secrets
 from passlib.context import CryptContext
 from app.models.models import Base, User as DBUser, File as DBFile, Folder, Permission, FileVersion as DBFileVersion
 from app.models.schemas import PermissionCreate, UserCreate, User, Token, AccessType, FileUploadRequest, FolderCreate, FileVersion, FileSearchRequest, RollbackRequest
-from app.utils.connection import SessionLocal
+from app.utils.connection import create_database_if_not_exists, create_tables,  SessionLocal
 
-# Define your constants
+app = FastAPI()
+
+create_database_if_not_exists()
+create_tables()
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 SECRET_KEY = "r3K6sbv0e9F6JpxtsRmtV9f3XtU88e9TwL6zMbLQF3w6z5-8wUcmk9JX1A8Lv2pE"
 ALGORITHM = "HS256"
