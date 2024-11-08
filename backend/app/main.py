@@ -12,7 +12,12 @@ import secrets
 from passlib.context import CryptContext
 from app.models.models import Base, User as DBUser, File as DBFile, Folder, Permission, FileVersion as DBFileVersion
 from app.models.schemas import PermissionCreate, UserCreate, User, Token, AccessType, FileUploadRequest, FolderCreate, FileVersion, FileSearchRequest, RollbackRequest
-from app.utils.connection import SessionLocal
+from app.utils.connection import create_database_if_not_exists, create_tables,  SessionLocal
+
+app = FastAPI()
+
+create_database_if_not_exists()
+create_tables()
 
 # Define your constants
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
