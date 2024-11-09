@@ -17,7 +17,7 @@ const Register = () => {
     try {
       const response = await registerUser({ username, email, password });  // Call register API
       if (response) {
-        setGlobalToken(response.access_token);  // Store the access token after registration
+        setGlobalToken(username, response.access_token);  // Store the access token after registration
         navigate(`/user/${username}`);
       }
     } catch (error) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FileItem from './FileItem'; // Import the new FileItem component
+import FileItem from './FileItem'; 
 
 const FolderList = ({ folders, onUploadSuccess }) => {
     const [openFolders, setOpenFolders] = useState({});

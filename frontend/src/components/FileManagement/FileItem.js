@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import FileDownload from './FileDownload';  // Assuming FileDownload is a separate component
 import { shareFile, rollbackFile, getFileVersions } from '../../api'; 
-
+import { useUser } from '../UserContext';
 const FileItem = ({ file, onUploadSuccess, versions, onShowVersions }) => {
     const [sharingFileId, setSharingFileId] = useState(null);
     const [shareUsername, setShareUsername] = useState('');
     const [isRollingBack, setIsRollingBack] = useState(false);
     const [fileVersions, setFileVersions] = useState(versions || []);  // Initialize with passed versions
-
+    const {username} = useUser();
     // Fetch file versions from API when the file prop changes
     const fetchFileVersions = async () => {
         try {
-            const newVersions = await getFileVersions(file.file_id); // Fetch versions for the specific file
+            const newVersions = await getFileVersions(file.file_id, username); // Fetch versions for the specific file
             setFileVersions(newVersions); // Update the state with the fetched versions
         } catch (error) {
             console.error('Error fetching file versions:', error);
@@ -30,7 +30,7 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions }) => {
         }
 
         try {
-            await shareFile(file.file_id, { user_id: shareUsername, access_type: "shared" });  // Share the file
+            await shareFile(file.file_id, { user_id: shareUsername, access_type: "shared" }, username);  // Share the file
             alert('File shared successfully!');
             setShareUsername('');
             setSharingFileId(null);
@@ -47,7 +47,7 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions }) => {
     const handleRollback = async (versionNumber) => {
         setIsRollingBack(true);  // Set rolling back state to true
         try {
-            await rollbackFile(file.file_id, versionNumber);  // Rollback to the selected version
+            await rollbackFile(file.file_id, versionNumber, username);  // Rollback to the selected version
             alert(`File rolled back to version ${versionNumber}`);
             await fetchFileVersions();  // Re-fetch versions after rollback
 

@@ -39,7 +39,7 @@ describe('Register Component', () => {
 
     render(<Register />);
 
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const {username}Input = screen.getByPlaceholderText('Username');
     const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByText('Register');
@@ -65,7 +65,7 @@ describe('Register Component', () => {
 
     render(<Register />);
 
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const {username}Input = screen.getByPlaceholderText('Username');
     const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByText('Register');
@@ -102,7 +102,7 @@ describe('Register Component', () => {
 
     render(<Register />);
 
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const {username}Input = screen.getByPlaceholderText('Username');
     const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByText('Register');

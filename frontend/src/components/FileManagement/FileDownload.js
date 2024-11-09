@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { downloadFile } from '../../api';
+import { useUser } from '../UserContext';
 
 const FileDownload = ({ fileId }) => {
+  const {username} = useUser();
   const handleDownload = async () => {
     if (!fileId) {
       console.error('File ID is required');
@@ -10,7 +12,7 @@ const FileDownload = ({ fileId }) => {
     }
 
     try {
-      const response = await downloadFile(fileId);
+      const response = await downloadFile(fileId, username);
       
       if (response.status === 200) {
         const blob = new Blob([response.data], { type: response.headers['content-type'] });

@@ -5,19 +5,21 @@ import FileList from './FileManagement/FileList';
 import FolderList from './FileManagement/FolderList';
 import { listFilesAndFolders } from '../api';
 import { logoutUser } from '../api';
+import { useUser } from './UserContext';
 import './userpage.css';
 
 const UserPage = () => {
-  const { username } = useParams();
   const [files, setFiles] = useState([]);
   const [folders, setFolders] = useState([]);
   const [allFiles, setAllFiles] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const {username} = useUser();
 
   // Fetch files and folders from API
   const fetchFilesAndFolders = async () => {
     try {
       const { folders, independent_files } = await listFilesAndFolders(username);
+      console.log(username);
       setFolders(folders);
       setFiles(independent_files);
       setAllFiles(independent_files);
@@ -30,6 +32,9 @@ const UserPage = () => {
     fetchFilesAndFolders();
   }, [username]);
 
+  const onFilesFound = (newFiles) => {
+    setFiles(newFiles);
+};
   // Handle search query change and filter files
   const handleSearchChange = (query) => {
     setSearchQuery(query);
@@ -66,7 +71,7 @@ const UserPage = () => {
 
       <div className="userpage-section">
         <FolderList folders={folders} username={username} />
-        <FileList files={files} onUploadSuccess={fetchFilesAndFolders} username={username} />
+        <FileList files={files} onUploadSuccess={fetchFilesAndFolders} username={username} onFilesFound={onFilesFound} />
         <button onClick={handleLogout} className="logout-button">
           Logout
         </button>

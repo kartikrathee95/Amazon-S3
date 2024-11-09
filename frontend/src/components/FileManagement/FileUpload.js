@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { uploadFile } from '../../api';
-
+import { useUser } from '../UserContext';
 const FileUpload = ({ onUploadSuccess }) => {
     const [file, setFile] = useState(null);
     const [folderName, setFolderName] = useState('');
     const [originalFileName, setOriginalFileName] = useState('');  // State to store the original file name
-
+    const {username} = useUser();
     const handleUpload = async (e) => {
         e.preventDefault();
         if (!file) {
@@ -16,7 +16,7 @@ const FileUpload = ({ onUploadSuccess }) => {
 
         try {
             // Upload the file
-            const response = await uploadFile(file, folderName ? folderName : null);
+            const response = await uploadFile(file, folderName ? folderName : null, username);
             console.log('File uploaded successfully');
             alert('File uploaded successfully');
 

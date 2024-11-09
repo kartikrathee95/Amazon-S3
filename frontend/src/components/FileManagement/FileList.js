@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { listFiles, getFileVersions, downloadFile } from '../../api';
 import FileItem from './FileItem';
-
+import { useUser } from '../UserContext';
 const FileList = ({ files, onFilesFound, onResetSearch, onUploadSuccess }) => {
+    const {username} = useUser();
     const [fileVersions, setFileVersions] = useState({});
     const [loading, setLoading] = useState(false);  
-
     // Fetch files initially (non-search)
     const fetchFiles = async () => {
         setLoading(true);
         try {
-            const response = await listFiles();
+            const response = await listFiles(username);
             const independentFiles = response.filter(file => !file.folder_id); // Filter out folders
             onFilesFound(independentFiles);  // Pass to parent for setting files
         } catch (error) {
@@ -27,7 +27,7 @@ const FileList = ({ files, onFilesFound, onResetSearch, onUploadSuccess }) => {
     // Fetch file versions for a specific file
     const fetchFileVersions = async (fileId) => {
         try {
-            const response = await getFileVersions(fileId);
+            const response = await getFileVersions(fileId, username);
             setFileVersions((prev) => ({
                 ...prev,
                 [fileId]: response.versions || [],

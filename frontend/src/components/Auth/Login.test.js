@@ -39,7 +39,7 @@ describe('Login Component', () => {
     
     render(<Login onSwitch={jest.fn()} />);
 
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const {username}Input = screen.getByPlaceholderText('Username');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByText('Login');
     
@@ -58,7 +58,7 @@ describe('Login Component', () => {
 
     render(<Login onSwitch={jest.fn()} />);
 
-    const usernameInput = screen.getByPlaceholderText('Username');
+    const {username}Input = screen.getByPlaceholderText('Username');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitButton = screen.getByText('Login');
     
