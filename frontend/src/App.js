@@ -25,6 +25,20 @@ const App = () => {
               <div style={{ textAlign: 'center', marginTop: '50px' }}>
                 <h1>Welcome to Amazon S3 Cloud Storage</h1>
                 <p>Your cloud storage solution for storing and sharing files securely.</p>
+                <button
+                  onClick={() => window.location.href = '/login'}
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '16px',
+                    backgroundColor: '#007bff',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Login to Your Account
+                </button>
               </div>
             }
           />
