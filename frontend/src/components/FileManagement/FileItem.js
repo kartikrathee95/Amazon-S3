@@ -7,22 +7,22 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions, onRollbackS
     const [sharingFileId, setSharingFileId] = useState(null);
     const [shareUsername, setShareUsername] = useState('');
     const [isRollingBack, setIsRollingBack] = useState(false);
-    const [fileVersions, setFileVersions] = useState(versions || []);  // Initialize with passed versions
+    const [fileVersions, setFileVersions] = useState(versions || []);
     const { username } = useUser();
 
     // Fetch file versions from API when the file prop changes
     const fetchFileVersions = async () => {
         try {
-            const newVersions = await getFileVersions(file.file_id, username); // Fetch versions for the specific file
-            setFileVersions(newVersions); // Update the state with the fetched versions
+            const newVersions = await getFileVersions(file.file_id, username);
+            setFileVersions(newVersions);
         } catch (error) {
             console.error('Error fetching file versions:', error);
         }
     };
 
     useEffect(() => {
-        fetchFileVersions();  // Fetch versions when the component mounts or file prop changes
-    }, [file]);  // Trigger re-fetch when the file prop changes (such as after upload)
+        fetchFileVersions();
+    }, [file]);
 
     // Handle the sharing logic
     const handleShare = async () => {
@@ -45,7 +45,7 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions, onRollbackS
         }
     };
 
-    // Handle rollback logic for a specific file version
+    // rollback for a specific file version
     const handleRollback = async (versionNumber) => {
         setIsRollingBack(true);
         try {
@@ -65,13 +65,13 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions, onRollbackS
 
     // Handle delete action
     const handleDelete = async () => {
-        console.log('Delete button clicked for file:', file.filename, 'ID:', file.file_id);  // Log the delete action
+        console.log('Delete button clicked for file:', file.filename, 'ID:', file.file_id);
         const confirmDelete = window.confirm('Are you sure you want to delete this file?');
         if (!confirmDelete) return;
 
         try {
-            const response = await deleteFile(file.file_id, username);  // Call deleteFile API
-            console.log('Delete response:', response);  // Log the response from the backend
+            const response = await deleteFile(file.file_id, username);
+            console.log('Delete response:', response);
             alert('File deleted successfully!');
             if (onDeleteSuccess && typeof onDeleteSuccess === 'function') {
                 onDeleteSuccess(file.file_id);  // Refresh the file list after deletion
@@ -92,11 +92,11 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions, onRollbackS
                 onChange={(e) => {
                     const value = e.target.value;
                     if (value === 'share') {
-                        setSharingFileId(file.file_id);  // Enable sharing if selected
+                        setSharingFileId(file.file_id);
                     } else if (value === 'delete') {
-                        handleDelete();  // Trigger delete if selected
+                        handleDelete();
                     } else {
-                        setSharingFileId(null);  // Disable sharing if another option is selected
+                        setSharingFileId(null);
                     }
                 }}
             >
@@ -106,7 +106,7 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions, onRollbackS
                 <option value="delete">Delete</option>  {/* Added delete option */}
             </select>
 
-            {/* Conditional rendering for the sharing input */}
+            {/*Rendering for the sharing input */}
             {sharingFileId === file.file_id && (
                 <div>
                     <input
@@ -138,7 +138,7 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions, onRollbackS
                         ))}
                     </ul>
                 ) : (
-                    <p>No versions available.</p>  // If no versions, show this message
+                    <p>No versions available.</p> 
                 )}
             </div>
         </li>

@@ -1,19 +1,23 @@
 # SQLAlchemy Models
 from datetime import datetime
 from enum import Enum
-from sqlalchemy import Column, Integer, String, BigInteger, Boolean, ForeignKey, Enum as SQLAlchemyEnum, DateTime, Text, TIMESTAMP
+
+from sqlalchemy import TIMESTAMP, BigInteger, Boolean, Column, DateTime
+from sqlalchemy import Enum as SQLAlchemyEnum
+from sqlalchemy import ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
+
 from app.utils.connection import Base, engine
 
 
 class AccessType(Enum):
-    private = 'private'
-    public = 'public'
-    shared = 'shared'
+    private = "private"
+    public = "public"
+    shared = "shared"
 
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, index=True)
@@ -29,11 +33,11 @@ class User(Base):
 
 
 class File(Base):
-    __tablename__ = 'files'
+    __tablename__ = "files"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    folder_id = Column(Integer, ForeignKey('folders.id'), nullable=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    folder_id = Column(Integer, ForeignKey("folders.id"), nullable=True)
     file_name = Column(String, nullable=False)
     file_size = Column(BigInteger, nullable=False)
     file_type = Column(String, nullable=False)
@@ -49,12 +53,11 @@ class File(Base):
     folder = relationship("Folder", back_populates="files")
 
 
-
 class Folder(Base):
-    __tablename__ = 'folders'
+    __tablename__ = "folders"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey("users.id"))
     name = Column(String, nullable=False)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -64,12 +67,11 @@ class Folder(Base):
     permissions = relationship("Permission", back_populates="folder")
 
 
-
 class FileVersion(Base):
-    __tablename__ = 'file_versions'
+    __tablename__ = "file_versions"
 
     version_id = Column(Integer, primary_key=True, index=True)
-    id = Column(Integer, ForeignKey('files.id'))
+    id = Column(Integer, ForeignKey("files.id"))
     version_number = Column(Integer, nullable=False)
     file_size = Column(BigInteger, nullable=False)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
@@ -79,10 +81,10 @@ class FileVersion(Base):
 
 
 class Metadata(Base):
-    __tablename__ = 'metadata'
+    __tablename__ = "metadata"
 
     id = Column(Integer, primary_key=True, index=True)
-    file_id = Column(Integer, ForeignKey('files.id'))
+    file_id = Column(Integer, ForeignKey("files.id"))
     key = Column(String(50), nullable=False)
     value = Column(Text, nullable=False)
 
@@ -90,13 +92,16 @@ class Metadata(Base):
 
 
 class Permission(Base):
-    __tablename__ = 'permissions'
+    __tablename__ = "permissions"
 
     permission_id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    file_id = Column(Integer, ForeignKey('files.id'), nullable=True)
-    folder_id = Column(Integer, ForeignKey('folders.id'), nullable=True)
-    access_type = Column(SQLAlchemyEnum(AccessType, name='access_type_enum', native_enum=False), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    file_id = Column(Integer, ForeignKey("files.id"), nullable=True)
+    folder_id = Column(Integer, ForeignKey("folders.id"), nullable=True)
+    access_type = Column(
+        SQLAlchemyEnum(AccessType, name="access_type_enum", native_enum=False),
+        nullable=False,
+    )
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     user = relationship("User", back_populates="permissions")
     file = relationship("File", back_populates="permissions")
@@ -104,14 +109,15 @@ class Permission(Base):
 
 
 class UsageAnalytics(Base):
-    __tablename__ = 'usage_analytics'
+    __tablename__ = "usage_analytics"
 
     analytics_id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey("users.id"))
     storage_used = Column(BigInteger, nullable=False)
     total_files = Column(Integer, nullable=False)
     last_accessed = Column(TIMESTAMP, default=datetime.utcnow)
 
     user = relationship("User", back_populates="usage_analytics")
+
 
 Base.metadata.create_all(bind=engine)
