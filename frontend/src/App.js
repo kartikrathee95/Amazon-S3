@@ -19,6 +19,15 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Routes>
+        <Route
+            path="/"
+            element={
+              <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                <h1>Welcome to Amazon S3 Cloud Storage</h1>
+                <p>Your cloud storage solution for storing and sharing files securely.</p>
+              </div>
+            }
+          />
           <Route path="/homepage" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
