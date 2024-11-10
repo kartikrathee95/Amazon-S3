@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import FileDownload from './FileDownload';  // Assuming FileDownload is a separate component
-import { shareFile, rollbackFile, getFileVersions } from '../../api'; 
+import { deleteFile, shareFile, rollbackFile, getFileVersions } from '../../api';
 import { useUser } from '../UserContext';
-const FileItem = ({ file, onUploadSuccess, versions, onShowVersions }) => {
+import FileDownload from './FileDownload';
+
+const FileItem = ({ file, onUploadSuccess, versions, onShowVersions, onRollbackSuccess, onDeleteSuccess }) => {
     const [sharingFileId, setSharingFileId] = useState(null);
     const [shareUsername, setShareUsername] = useState('');
     const [isRollingBack, setIsRollingBack] = useState(false);
     const [fileVersions, setFileVersions] = useState(versions || []);  // Initialize with passed versions
-    const {username} = useUser();
+    const { username } = useUser();
+
     // Fetch file versions from API when the file prop changes
     const fetchFileVersions = async () => {
         try {
@@ -30,12 +32,12 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions }) => {
         }
 
         try {
-            await shareFile(file.file_id, { user_id: shareUsername, access_type: "shared" }, username);  // Share the file
+            await shareFile(file.file_id, { user_id: shareUsername, access_type: "shared" }, username);
             alert('File shared successfully!');
             setShareUsername('');
             setSharingFileId(null);
             if (onUploadSuccess && typeof onUploadSuccess === 'function') {
-                onUploadSuccess();  // Refresh the UI after sharing
+                onUploadSuccess();
             }
         } catch (error) {
             console.error('Error sharing file:', error);
@@ -45,39 +47,54 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions }) => {
 
     // Handle rollback logic for a specific file version
     const handleRollback = async (versionNumber) => {
-        setIsRollingBack(true);  // Set rolling back state to true
+        setIsRollingBack(true);
         try {
             await rollbackFile(file.file_id, versionNumber, username);  // Rollback to the selected version
             alert(`File rolled back to version ${versionNumber}`);
-            await fetchFileVersions();  // Re-fetch versions after rollback
-
-            if (onUploadSuccess && typeof onUploadSuccess === 'function') {
-                onUploadSuccess();  // Refresh the UI after rollback
+            await fetchFileVersions();
+            if (onRollbackSuccess && typeof onRollbackSuccess === 'function') {
+                onRollbackSuccess(file.file_id);
             }
         } catch (error) {
             console.error('Error rolling back file:', error);
             alert('Failed to rollback file');
         } finally {
-            setIsRollingBack(false);  // Reset rolling back state
+            setIsRollingBack(false);
+        }
+    };
+
+    // Handle delete action
+    const handleDelete = async () => {
+        console.log('Delete button clicked for file:', file.filename, 'ID:', file.file_id);  // Log the delete action
+        const confirmDelete = window.confirm('Are you sure you want to delete this file?');
+        if (!confirmDelete) return;
+
+        try {
+            const response = await deleteFile(file.file_id, username);  // Call deleteFile API
+            console.log('Delete response:', response);  // Log the response from the backend
+            alert('File deleted successfully!');
+            if (onDeleteSuccess && typeof onDeleteSuccess === 'function') {
+                onDeleteSuccess(file.file_id);  // Refresh the file list after deletion
+            }
+        } catch (error) {
+            console.error('Error deleting file:', error);
+            alert('Failed to delete file. Please try again.');
         }
     };
 
     return (
         <li>
-            <div>
-                {/* Display the file name */}
-                <h3>{file.filename}</h3>  {/* Ensure the filename is passed */}
-            </div>
-
-            {/* Ensure file_id is passed correctly to FileDownload */}
-            <FileDownload fileId={file.file_id} />  {/* Ensure this is passed correctly */}
-
+            <h3>{file.filename}</h3>
+            <FileDownload fileId={file.file_id} />
+            
             {/* Select Action Dropdown */}
             <select
                 onChange={(e) => {
                     const value = e.target.value;
                     if (value === 'share') {
                         setSharingFileId(file.file_id);  // Enable sharing if selected
+                    } else if (value === 'delete') {
+                        handleDelete();  // Trigger delete if selected
                     } else {
                         setSharingFileId(null);  // Disable sharing if another option is selected
                     }
@@ -86,6 +103,7 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions }) => {
                 <option value="">Select Action</option>
                 <option value="download">Download</option>
                 <option value="share">Share</option>
+                <option value="delete">Delete</option>  {/* Added delete option */}
             </select>
 
             {/* Conditional rendering for the sharing input */}

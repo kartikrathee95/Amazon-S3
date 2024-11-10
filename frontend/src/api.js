@@ -150,7 +150,7 @@ export const deleteFolder = async (folderId, username) => {
 // Share File
 export const shareFile = async (fileId, shareDetails, username) => {
   const token = getGlobalToken(username);
-  return await apiClient.post(`http://localhost:8000/S3/share_file/${fileId}`, shareDetails, {
+  return await apiClient.post(`/share_file/${fileId}`, shareDetails, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -211,4 +211,19 @@ export const rollbackFile = async (fileId, versionNumber, username) => {
     console.error('Error rolling back file:', error);
     throw error;
   }
+};
+
+
+export const deleteFile = async (fileId, username) => {
+  const token = getGlobalToken(username);
+
+    try {
+        const response = await apiClient.delete(`/files/${fileId}`,
+          {headers: {'Authorization': `Bearer ${token}`}}
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        throw error;
+    }
 };

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { listFiles, getFileVersions, downloadFile } from '../../api';
 import FileItem from './FileItem';
 import { useUser } from '../UserContext';
+
 const FileList = ({ files, onFilesFound, onResetSearch, onUploadSuccess }) => {
-    const {username} = useUser();
+    const { username } = useUser();
     const [fileVersions, setFileVersions] = useState({});
-    const [loading, setLoading] = useState(false);  
+    const [loading, setLoading] = useState(false);
+
     // Fetch files initially (non-search)
     const fetchFiles = async () => {
         setLoading(true);
@@ -20,11 +22,7 @@ const FileList = ({ files, onFilesFound, onResetSearch, onUploadSuccess }) => {
         }
     };
 
-    useEffect(() => {
-        fetchFiles();
-    }, []);
-
-    // Fetch file versions for a specific file
+    // Handle file versions fetch
     const fetchFileVersions = async (fileId) => {
         try {
             const response = await getFileVersions(fileId, username);
@@ -52,6 +50,16 @@ const FileList = ({ files, onFilesFound, onResetSearch, onUploadSuccess }) => {
         await fetchFileVersions(fileId);  // Re-fetch versions after rollback
     };
 
+    // Handle file deletion and update the file list
+    const handleDeleteSuccess = (deletedFileId) => {
+        const updatedFiles = files.filter(file => file.file_id !== deletedFileId);  // Remove deleted file
+        onFilesFound(updatedFiles);  // Update the file list in the parent component
+    };
+
+    useEffect(() => {
+        fetchFiles();  // Fetch the file list on mount
+    }, []);
+
     return (
         <div>
             <h2>Files</h2>
@@ -65,7 +73,7 @@ const FileList = ({ files, onFilesFound, onResetSearch, onUploadSuccess }) => {
                 <ul>
                     {files.map((file) => {
                         return (
-                            <FileItem 
+                            <FileItem
                                 key={file.file_id}  // Ensure a unique key for each item
                                 file={file}  // Ensure the file object is passed correctly here
                                 onUploadSuccess={onUploadSuccess}
@@ -73,6 +81,7 @@ const FileList = ({ files, onFilesFound, onResetSearch, onUploadSuccess }) => {
                                 versions={fileVersions[file.file_id] || []}  // Pass versions if available
                                 onRollbackSuccess={handleRollbackSuccess}
                                 onDownload={() => handleDownload(file.file_id)}  // Pass file_id to download
+                                onDeleteSuccess={handleDeleteSuccess}  // Pass the delete handler here
                             />
                         );
                     })}

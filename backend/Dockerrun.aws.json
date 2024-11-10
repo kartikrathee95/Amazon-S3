@@ -1,0 +1,67 @@
+{
+    "AWSEBDockerrunVersion": "2",
+    "containerDefinitions": [
+      {
+        "name": "fastapi-app",
+        "build": {
+          "context": ".",
+          "dockerfile": "Dockerfile"
+        },
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "hostPort": 8000,
+            "containerPort": 8000
+          }
+        ],
+        "environment": [
+          {
+            "name": "DATABASE_URL",
+            "value": "postgresql://postgres:12345qwert@db:5432/entity_store"
+          }
+        ]
+      },
+      {
+        "name": "db",
+        "image": "postgres:13",
+        "memory": 512,
+        "essential": false,
+        "portMappings": [
+          {
+            "hostPort": 5432,
+            "containerPort": 5432
+          }
+        ],
+        "environment": [
+          {
+            "name": "POSTGRES_DB",
+            "value": "entity_store"
+          },
+          {
+            "name": "POSTGRES_USER",
+            "value": "postgres"
+          },
+          {
+            "name": "POSTGRES_PASSWORD",
+            "value": "12345qwert"
+          }
+        ],
+        "mountPoints": [
+          {
+            "sourceVolume": "postgres-data",
+            "containerPath": "/var/lib/postgresql/data"
+          }
+        ]
+      }
+    ],
+    "volumes": [
+      {
+        "name": "postgres-data",
+        "host": {
+          "sourcePath": "/mnt/data/postgres-data"
+        }
+      }
+    ]
+  }
+  
