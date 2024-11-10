@@ -15,9 +15,9 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await registerUser({ username, email, password });  // Call register API
+      const response = await registerUser({ username, email, password });
       if (response) {
-        setGlobalToken(username, response.access_token);  // Store the access token after registration
+        setGlobalToken(username, response.access_token);
         navigate(`/user/${username}`);
       }
     } catch (error) {
@@ -26,10 +26,15 @@ const Register = () => {
     }
   };
 
+  // navigate back to login page
+  const handleBackToLogin = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="register-container">
       <h2>Register</h2>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}  {/* Display error message if registration fails */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleRegister}>
         <input 
           type="text" 
@@ -57,6 +62,8 @@ const Register = () => {
         />
         <button type="submit" className="submit-button">Register</button>
       </form>
+      
+      <button onClick={handleBackToLogin} className="back-to-login-button">Back to Login</button>
     </div>
   );
 };
