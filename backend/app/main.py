@@ -35,7 +35,7 @@ ALGORITHM = "HS256"
 TOKEN_URL = "/S3/auth/oauth/login"
 
 app = FastAPI()
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3000","https://amazons3-app.onrender.com","*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
