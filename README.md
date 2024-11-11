@@ -155,9 +155,9 @@ To run the project locally, follow the steps below:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/kartikrathee95/Amazon-S3.git
+    git clone -b gh-pages https://github.com/kartikrathee95/Amazon-S3.git
     git checkout gh-pages
-    cd amazon-s3-clone/backend
+    cd Amazon-S3/backend
     ```
 
 2. Create and activate a virtual environment:
@@ -188,7 +188,7 @@ The backend will be running at `http://localhost:8000/`.
 1. Navigate to the frontend directory:
 
     ```bash
-    cd amazon-s3-clone/frontend
+    cd Amazon-S3/frontend
     ```
 
 2. Install the dependencies:
