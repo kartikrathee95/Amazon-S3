@@ -172,6 +172,7 @@ To run the project locally, follow the steps below:
     ```bash
     pip install poetry
     poetry install
+    For running the unit tests: poetry run pytest -s
     ```
 
 4. Run the FastAPI server:
