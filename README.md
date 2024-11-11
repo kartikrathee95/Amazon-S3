@@ -255,7 +255,7 @@ The frontend will be running at `http://localhost:3000/`.
 
 Both the frontend and backend are deployed and hosted using **Render**.
 
-- **Frontend URL**: [https://amazons3-app.onrender.com/](https://amazons3-app.onrender.com/)
+- **Frontend URL**: [https://amazon-s3-1.onrender.com/](https://amazon-s3-1.onrender.com/)
 - **Backend URL**: [https://amazon-s3-2.onrender.com/](https://amazon-s3-2.onrender.com/)
 
 ### Backend
