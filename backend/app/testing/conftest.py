@@ -32,22 +32,19 @@ def test_db():
     # Create a new session for each test
     db = SessionLocal()
     try:
-        yield db  # this will be the session that is passed to the test function
+        yield db
     finally:
         db.close()
-        # Drop all tables after tests are done
         Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture(scope="module")
 def token():
     client = TestClient(app)
-
-    # Register the user (you could also mock this step if you wanted)
     client.post(
-        "/S3/auth/register",
+        "/S3/auth/oauth/register",
         json={
-            "username": "testuser",
+            "username": "testuser1",
             "email": "test@example.com",
             "password": "testpassword",
         },
@@ -58,8 +55,6 @@ def token():
         "/S3/auth/oauth/login",
         data={"username": "testuser", "password": "testpassword"},
     )
-
-    # Ensure login was successful
     assert login_response.status_code == 200
     token = login_response.json()["access_token"]
 
