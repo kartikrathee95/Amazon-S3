@@ -38,7 +38,7 @@ The frontend of the application is a simple, user-friendly interface built with 
 ### UI Deployment
 
 The UI is deployed and accessible at:  
-[https://amazons3-app.onrender.com/](https://amazons3-app.onrender.com/)
+[https://amazon-s3-1.onrender.com/](https://amazon-s3-1.onrender.com/)
 
 ### UI Walkthrough
 
