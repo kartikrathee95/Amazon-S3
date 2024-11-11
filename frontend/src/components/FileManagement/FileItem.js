@@ -27,7 +27,7 @@ const FileItem = ({ file, onUploadSuccess, versions, onShowVersions, onRollbackS
     // Handle the sharing logic
     const handleShare = async () => {
         if (!shareUsername) {
-            alert('Please enter a username or email to share with.');
+            alert('Please enter a username share with.');
             return;
         }
 
