@@ -263,7 +263,7 @@ Both the frontend and backend are deployed and hosted using **Render**.
 The backend is deployed using FastAPI with a PostgreSQL database and has the following configurations:
 
 - **Database URL**: Configured in `app/utils/connection.py`.
-- **CORS**: The backend allows requests from the frontend deployed at `https://amazons3-app.onrender.com/` and `http://localhost:3000`.
+- **CORS**: The backend allows requests from the frontend deployed at `https://amazon-s3-1.onrender.com/` and `http://localhost:3000`.
 
 ### Frontend
 
