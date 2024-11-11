@@ -2,7 +2,7 @@
   "name": "amazon-s3-cloud-storage",
   "version": "1.0.0",
   "scripts": {
-    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
