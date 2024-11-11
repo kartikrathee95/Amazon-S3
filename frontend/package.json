@@ -27,7 +27,10 @@
     ]
   },
   "devDependencies": {
+    "jest-worker": "^27.0.0",
+    "terser-webpack-plugin": "^5.0.0",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    
   }
 }
