@@ -155,7 +155,7 @@ To run the project locally, follow the steps below:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/amazon-s3-clone.git
+    git clone https://github.com/kartikrathee95/Amazon-S3.git
     git checkout gh-pages
     cd amazon-s3-clone/backend
     ```
