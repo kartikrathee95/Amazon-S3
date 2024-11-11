@@ -184,6 +184,37 @@ To run the project locally, follow the steps below:
 The backend will be running at `http://localhost:8000/`.
 
 ### Frontend
+# Install Node.js v20 Using NVM
+
+This project requires **Node.js v20** to run. Follow the instructions below to install **Node.js v20** using **nvm** (Node Version Manager) on **Windows**, **macOS**, and **Ubuntu (Linux)**.
+
+### 1. Install `nvm` (Node Version Manager)
+
+- **For Windows**:
+  1. Download the latest release of [nvm-windows](https://github.com/coreybutler/nvm-windows/releases).
+  2. Run the installer and follow the setup instructions.
+
+- **For macOS and Ubuntu (Linux)**:
+  1. Run the following command to install `nvm`:
+
+     ```bash
+     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+     ```
+
+  2. After installation, restart your terminal or run the following to load `nvm` into your session:
+
+     ```bash
+     source ~/.bashrc   # For bash
+     source ~/.zshrc    # For zsh
+     ```
+
+### 2. Install Node.js v20
+
+Once `nvm` is installed, you can install **Node.js v20** by running the following command:
+
+```bash
+nvm install 20
+nvm use 20
 
 1. Navigate to the frontend directory:
 
