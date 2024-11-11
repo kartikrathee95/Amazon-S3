@@ -271,18 +271,6 @@ The frontend is a React-based application that communicates with the backend via
 
 ---
 
-## Contributing
-
-Contributions are welcome! Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch for your changes.
-3. Commit your changes with descriptive messages.
-4. Push your changes to your fork.
-5. Create a pull request.
-
----
-
 ## Acknowledgements
 
 - FastAPI for the backend framework.
