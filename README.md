@@ -1,6 +1,8 @@
-# Amazon-S3--Cloud-Storage
+# Amazon S3 Cloud Storage
 
-This project is a cloud storage solution inspired by Amazon S3, where users can upload, download, share, search, and manage their files securely. The backend is built using FastAPI and the frontend is built using React.
+This project is a cloud storage solution inspired by Amazon S3, where users can upload, download, share, search, and manage their files securely. The backend is built using **FastAPI**, and the frontend is built using **React**.
+
+---
 
 ## Table of Contents
 
@@ -14,9 +16,14 @@ This project is a cloud storage solution inspired by Amazon S3, where users can 
   - [File Sharing](#file-sharing)
   - [File Search](#file-search)
 - [Running the Project Locally](#running-the-project-locally)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+  - [Install Node.js v20 Using NVM](#install-nodejs-v20-using-nvm)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 - [License](#license)
+
+---
 
 ## Overview
 
@@ -30,14 +37,14 @@ The frontend of the application is a simple, user-friendly interface built with 
 
 ### UI Deployment
 
-The UI is deployed and accessible at: [https://amazons3-app.onrender.com/](https://amazons3-app.onrender.com/)
+The UI is deployed and accessible at:  
+[https://amazons3-app.onrender.com/](https://amazons3-app.onrender.com/)
 
 ### UI Walkthrough
 
 Upon visiting the UI URL, you will see the following screen:
 
 #### 1. **Welcome Screen**
-
 The welcome screen provides a brief introduction to the application:
 
 > **"Welcome to Amazon S3 Cloud Storage"**  
@@ -46,11 +53,9 @@ The welcome screen provides a brief introduction to the application:
 You can then click the **Login to your account** button to proceed to the login page.
 
 #### 2. **Login Screen**
-
 On the login page, you can enter your **username** and **password** to log into your account. If you don't have an account, you can register using the **Register** button (via the backend registration API).
 
 #### 3. **Dashboard**
-
 After logging in, you are taken to the main dashboard with the following options:
 
 - **File Upload**: Upload files to the cloud storage.
@@ -61,8 +66,6 @@ After logging in, you are taken to the main dashboard with the following options
 - **Rollback Version**: Roll back to a previous version of a file.
 - **Logout**: Log out of your account.
 
-Each button corresponds to a functionality provided by the backend APIs, and you can interact with them directly.
-
 ---
 
 ## Backend Details
@@ -71,7 +74,8 @@ The backend is developed using **FastAPI**, which provides robust, scalable, and
 
 ### Backend Deployment
 
-The backend is deployed and accessible at: [https://amazon-s3-2.onrender.com/](https://amazon-s3-2.onrender.com/)
+The backend is deployed and accessible at:  
+[https://amazon-s3-2.onrender.com/](https://amazon-s3-2.onrender.com/)
 
 ### Features
 
@@ -146,9 +150,9 @@ To run the project locally, follow the steps below:
 
 ### Prerequisites
 
-- Python 3.8+ (for the backend)
-- Node.js 14+ (for the frontend)
-- PostgreSQL (for the database)
+- **Python 3.8+** (for the backend)
+- **Node.js 14+** (for the frontend)
+- **PostgreSQL** (for the database)
 
 ### Backend
 
@@ -172,7 +176,12 @@ To run the project locally, follow the steps below:
     ```bash
     pip install poetry
     poetry install
-    For running the unit tests: poetry run pytest -s
+    ```
+
+    For running the unit tests:
+
+    ```bash
+    poetry run pytest -s
     ```
 
 4. Run the FastAPI server:
@@ -184,51 +193,55 @@ To run the project locally, follow the steps below:
 The backend will be running at `http://localhost:8000/`.
 
 ### Frontend
-# Install Node.js v20 Using NVM
+
+#### Install Node.js v20 Using NVM
 
 This project requires **Node.js v20** to run. Follow the instructions below to install **Node.js v20** using **nvm** (Node Version Manager) on **Windows**, **macOS**, and **Ubuntu (Linux)**.
 
-### 1. Install `nvm` (Node Version Manager)
+1. **Install `nvm` (Node Version Manager)**
 
-- **For Windows**:
-  1. Download the latest release of [nvm-windows](https://github.com/coreybutler/nvm-windows/releases).
-  2. Run the installer and follow the setup instructions.
+    - **For Windows**:
+      1. Download the latest release of [nvm-windows](https://github.com/coreybutler/nvm-windows/releases).
+      2. Run the installer and follow the setup instructions.
 
-- **For macOS and Ubuntu (Linux)**:
-  1. Run the following command to install `nvm`:
+    - **For macOS and Ubuntu (Linux)**:
+      1. Run the following command to install `nvm`:
 
-     ```bash
-     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-     ```
+         ```bash
+         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+         ```
 
-  2. After installation, restart your terminal or run the following to load `nvm` into your session:
+      2. After installation, restart your terminal or run the following to load `nvm` into your session:
 
-     ```bash
-     source ~/.bashrc   # For bash
-     source ~/.zshrc    # For zsh
-     ```
+         ```bash
+         source ~/.bashrc   # For bash
+         source ~/.zshrc    # For zsh
+         ```
 
-### 2. Install Node.js v20
+2. **Install Node.js v20**
 
-Once `nvm` is installed, you can install **Node.js v20** by running the following command:
-
-```bash
-nvm install 20
-nvm use 20
-
-1. Navigate to the frontend directory:
+    Once `nvm` is installed, you can install **Node.js v20** by running the following command:
 
     ```bash
-    cd Amazon-S3/frontend
+    nvm install 20
+    nvm use 20
     ```
 
-2. Install the dependencies:
+3. **Install Frontend Dependencies**
 
-    ```bash
-    npm install
-    ```
+    1. Navigate to the frontend directory:
 
-3. Start the React development server:
+       ```bash
+       cd Amazon-S3/frontend
+       ```
+
+    2. Install the dependencies:
+
+       ```bash
+       npm install
+       ```
+
+4. **Start the React Development Server**
 
     ```bash
     npm start
@@ -275,3 +288,5 @@ Contributions are welcome! Please follow these steps to contribute:
 - FastAPI for the backend framework.
 - React for the frontend framework.
 - PostgreSQL for the database.
+
+---
