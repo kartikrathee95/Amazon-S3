@@ -187,7 +187,7 @@ To run the project locally, follow the steps below:
 4. Run the FastAPI server:
 
     ```bash
-    uvicorn app.main:app --reload
+    poetry run uvicorn app.main:app --reload
     ```
 
 The backend will be running at `http://localhost:8000/`.
